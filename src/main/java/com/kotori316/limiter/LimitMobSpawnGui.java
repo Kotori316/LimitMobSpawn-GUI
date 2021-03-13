@@ -7,6 +7,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,6 +54,8 @@ public class LimitMobSpawnGui {
                     worldIn.getCapability(Caps.getLmsCapability())
                         .map(LMSHandlerMessage::createClientMessageToOpenGui)
                         .ifPresent(m -> PacketHandler.openGuiInClient(m, (ServerPlayerEntity) playerIn));
+                } else {
+                    playerIn.sendStatusMessage(new StringTextComponent("You need permission level 2."), false);
                 }
             }
             return ActionResult.resultSuccess(stack);
