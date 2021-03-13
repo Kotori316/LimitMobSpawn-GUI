@@ -47,9 +47,13 @@ public class LimitMobSpawnGui {
         public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
             ItemStack stack = playerIn.getHeldItem(handIn);
             if (!worldIn.isRemote) {
-                worldIn.getCapability(Caps.getLmsCapability())
-                    .map(LMSHandlerMessage::createClientMessageToOpenGui)
-                    .ifPresent(m -> PacketHandler.openGuiInClient(m, (ServerPlayerEntity) playerIn));
+                ServerPlayerEntity serverPlayerEntity = ((ServerPlayerEntity) playerIn);
+                if (serverPlayerEntity.hasPermissionLevel(2)) {
+                    // Allow op users to change config.
+                    worldIn.getCapability(Caps.getLmsCapability())
+                        .map(LMSHandlerMessage::createClientMessageToOpenGui)
+                        .ifPresent(m -> PacketHandler.openGuiInClient(m, (ServerPlayerEntity) playerIn));
+                }
             }
             return ActionResult.resultSuccess(stack);
         }

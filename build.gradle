@@ -114,7 +114,7 @@ def getForgeVersionToBuild() {
 
 dependencies {
     minecraft getForgeVersionToBuild()
-    implementation(fg.deobf("com.kotori316:LimitMobSpawn:16.4"))
+    implementation(fg.deobf("com.kotori316:LimitMobSpawn:" + version))
     implementation(fg.deobf("com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26") {
         transitive = false
     })
@@ -138,7 +138,6 @@ def jarAttributeMap = [
         "Implementation-Version"  : project.version,
         "Implementation-Vendor"   : "Kotori316",
         "Implementation-Timestamp": ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT),
-        "MixinConfigs"            : "limit-mob-spawn.mixins.json"
 ]
 jar {
     manifest {
@@ -186,15 +185,19 @@ curseforge {
     String minecraftVersion = v.substring(v.lastIndexOf(":") + 1).split("-")[0]
     apiKey = project.hasProperty("curseforge_additional-enchanted-miner_key") ? getProperty("curseforge_additional-enchanted-miner_key") : ""
     project {
-        id = '449932'
+        id = ''
         changelogType = 'markdown'
-        changelog = "See https://github.com/Kotori316/LimitMobSpawn/commits/master for change log." + System.lineSeparator() * 2 +
+        changelog = "See https://github.com/Kotori316/LimitMobSpawn-GUI/commits/master for change log." + System.lineSeparator() * 2 +
                 "For Minecraft $minecraftVersion, built with $v"
         releaseType = 'release'
         addGameVersion '1.16.5'
         mainArtifact jar
         addArtifact deobfJar
         addArtifact srcJar
+        relations {
+            requiredDependency 'limit-mob-spawn'
+            requiredDependency 'ftb-gui-library'
+        }
     }
     options {
         curseGradleOptions.debug = false // defaults to false
@@ -219,8 +222,8 @@ publishing {
                 String v = getForgeVersionToBuild()
                 String minecraftVersion = v.substring(v.lastIndexOf(":") + 1).split("-")[0]
                 name = archivesBaseName
-                description = "LimitMobSpawn for Minecraft $minecraftVersion, build with forge $v"
-                url = 'https://github.com/Kotori316/LimitMobSpawn'
+                description = "LimitMobSpawn-GUI for Minecraft $minecraftVersion, build with forge $v"
+                url = 'https://github.com/Kotori316/LimitMobSpawn-GUI'
                 packaging = "jar"
             }
         }
@@ -246,16 +249,6 @@ if (System.getProperty("idea.sync.active") == "true") {
         tasks.withType(JavaCompile).all {
             it.options.annotationProcessorPath = files()
         }
-    }
-}
-
-task copyToDir(type: Copy, dependsOn: "build") {
-    def PATH_NAME = "destination"
-    from(deobfJar.getArchiveFile())
-    into(file(java.util.Optional.ofNullable(System.getenv(PATH_NAME)).orElse(".")))
-    onlyIf {
-        System.getenv(PATH_NAME) != null &&
-                Files.exists(Paths.get(System.getenv(PATH_NAME)))
     }
 }
 

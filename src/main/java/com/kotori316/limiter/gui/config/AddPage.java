@@ -97,19 +97,19 @@ public class AddPage extends GuiButtonListBase {
             this.playClickSound();
             if (noProperty) {
                 TestSpawn spawn = serializer.from(new Dynamic<>(JsonOps.INSTANCE, JsonNull.INSTANCE));
-                addRule(spawn);
+                appender.accept(spawn);
                 AddPage.this.onBack();
             } else if (serializer == Not.SERIALIZER) {
-                AddPage page = new AddPage(AddPage.this.parent, t -> addRule(t.not()), Collections.singleton("not"));
+                AddPage page = new AddPage(AddPage.this.parent, t -> appender.accept(t.not()), Collections.singleton("not"));
                 page.setTitle(new StringTextComponent("Not Condition"));
                 page.openGui();
             } else if (serializer.equals(And.SERIALIZER)) {
                 CombinedConditionPage page = new CombinedConditionPage(AddPage.this.parent, serializer.getType(),
-                    And::new, AddPage.this::addRule);
+                    And::new, appender);
                 page.openGui();
             } else if (serializer.equals(Or.SERIALIZER)) {
                 CombinedConditionPage page = new CombinedConditionPage(AddPage.this.parent, serializer.getType(),
-                    Or::new, AddPage.this::addRule);
+                    Or::new, appender);
                 page.openGui();
             } else {
                 JsonObject object = new JsonObject();
@@ -118,7 +118,7 @@ public class AddPage extends GuiButtonListBase {
                     if (b) {
                         try {
                             TestSpawn spawn = serializer.from(new Dynamic<>(JsonOps.INSTANCE, object));
-                            addRule(spawn);
+                            appender.accept(spawn);
                         } catch (RuntimeException e) {
                             if (Minecraft.getInstance().player != null) {
                                 Minecraft.getInstance().player.sendMessage(new StringTextComponent(e.getMessage()), Util.DUMMY_UUID);
@@ -149,7 +149,4 @@ public class AddPage extends GuiButtonListBase {
         }
     }
 
-    private void addRule(TestSpawn spawn) {
-        appender.accept(spawn);
-    }
 }
