@@ -1,0 +1,32 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+license = "All rights reserved"
+[[mods]]
+modId = "limit-mob-spawn-gui"
+version = "${file.jarVersion}"
+displayName = "Limit Mob Spawn GUI"
+credits = "Kotori316"
+authors = "Kotori316"
+description = '''
+Change setting of Limit Mob Spawn from GUI.
+'''
+[[dependencies.limit-mob-spawn-gui]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.limit-mob-spawn-gui]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,1.17)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.limit-mob-spawn-gui]]
+modId = "limit-mob-spawn"
+mandatory = true
+versionRange = "[16,)"
+ordering = "NONE"
+side = "BOTH"

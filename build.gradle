@@ -1,0 +1,270 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = "https://plugins.gradle.org/m2/" }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'gradle.plugin.com.matthewprenger', name: 'CurseGradle', version: '1.4.0'
+        // classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'maven-publish'
+//apply plugin: 'org.spongepowered.mixin'
+apply plugin: "com.matthewprenger.cursegradle"
+
+version = '16.3'
+group = 'com.kotori316' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'LimitMobSpawn-GUI'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+println("Java: ${System.getProperty('java.version')} JVM: ${System.getProperty('java.vm.version')}(${System.getProperty('java.vendor')}) Arch: ${System.getProperty('os.arch')}")
+minecraft {
+    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'mixin.env.disableRefMap', 'true'
+            property "mixin.debug.export", "true"
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "limit-mob-spawn-gui" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+
+            mods {
+                "limit-mob-spawn-gui" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', "limit-mob-spawn-gui", '--all', '--output', file('src/test/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                "limit-mob-spawn-gui" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenLocal {
+        content {
+            includeGroup("com.kotori316")
+        }
+    }
+
+    maven {
+        name = "Azure-SLP"
+        url = uri("https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1")
+        content {
+            includeModule("com.kotori316", "LimitMobSpawn")
+        }
+    }
+
+    maven {
+        name = "FTB"
+        url = "https://maven.latmod.com/"
+        content {
+            includeModule("com.feed_the_beast.mods", "ftb-chunks")
+            includeModule("com.feed_the_beast.mods", "ftb-gui-library")
+        }
+    }
+
+    repositories.stream().filter { it instanceof MavenArtifactRepository }.forEach { repo ->
+        repo.content {
+            excludeVersionByRegex(".*", ".*", ".*_mapped_snapshot_.*")
+        }
+    }
+}
+
+def getForgeVersionToBuild() {
+    return 'net.minecraftforge:forge:1.16.5-36.0.46'
+}
+
+dependencies {
+    minecraft getForgeVersionToBuild()
+    implementation(fg.deobf("com.kotori316:LimitMobSpawn:16.4"))
+    implementation(fg.deobf("com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26") {
+        transitive = false
+    })
+
+    // Mixin
+    // annotationProcessor("org.spongepowered:mixin:0.8.2:processor")
+    // Test Dependencies.
+    String JUPITER_VERSION = '5.7.0'
+    testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: JUPITER_VERSION)
+    testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: JUPITER_VERSION)
+    testRuntimeOnly(group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: JUPITER_VERSION)
+    testImplementation(group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.7.0')
+}
+
+// Example for how to get properties into the manifest for reading by the runtime..
+def jarAttributeMap = [
+        "Specification-Title"     : "limit-mob-spawn-gui",
+        "Specification-Vendor"    : "Kotori316",
+        "Specification-Version"   : "1", // We are version 1 of ourselves
+        "Implementation-Title"    : project.name,
+        "Implementation-Version"  : project.version,
+        "Implementation-Vendor"   : "Kotori316",
+        "Implementation-Timestamp": ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT),
+        "MixinConfigs"            : "limit-mob-spawn.mixins.json"
+]
+jar {
+    manifest {
+        attributes(jarAttributeMap)
+    }
+}
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier.set('sources')
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    archiveClassifier.set('deobf')
+    manifest {
+        attributes(jarAttributeMap)
+    }
+}
+artifacts {
+    archives srcJar, deobfJar
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('signJar')
+
+task signJar(type: net.minecraftforge.gradle.common.task.SignJar, dependsOn: 'reobfJar') {
+    boolean executeCondition = project.hasProperty('keyStoreAlias') &&
+            project.hasProperty('keyStore') &&
+            project.hasProperty('keyStorePass')
+    onlyIf { executeCondition }
+    if (executeCondition) {
+        keyStore = project.getProperty("keyStore")
+        alias = project.getProperty('keyStoreAlias')
+        storePass = project.getProperty('keyStorePass')
+        keyPass = ""
+    }
+
+    inputFile = jar.getArchiveFile().get()
+    outputFile = jar.getArchiveFile().get()
+}
+
+curseforge {
+    String v = getForgeVersionToBuild()
+    String minecraftVersion = v.substring(v.lastIndexOf(":") + 1).split("-")[0]
+    apiKey = project.hasProperty("curseforge_additional-enchanted-miner_key") ? getProperty("curseforge_additional-enchanted-miner_key") : ""
+    project {
+        id = '449932'
+        changelogType = 'markdown'
+        changelog = "See https://github.com/Kotori316/LimitMobSpawn/commits/master for change log." + System.lineSeparator() * 2 +
+                "For Minecraft $minecraftVersion, built with $v"
+        releaseType = 'release'
+        addGameVersion '1.16.5'
+        mainArtifact jar
+        addArtifact deobfJar
+        addArtifact srcJar
+    }
+    options {
+        curseGradleOptions.debug = false // defaults to false
+        javaVersionAutoDetect = false
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = "LimitMobSpawn-GUI"
+            artifact srcJar {
+                archiveClassifier.set('sources')
+                archiveExtension.set('jar')
+            }
+            artifact deobfJar {
+                archiveClassifier.set('deobf')
+                archiveExtension.set('jar')
+            }
+            artifact jar
+            pom {
+                String v = getForgeVersionToBuild()
+                String minecraftVersion = v.substring(v.lastIndexOf(":") + 1).split("-")[0]
+                name = archivesBaseName
+                description = "LimitMobSpawn for Minecraft $minecraftVersion, build with forge $v"
+                url = 'https://github.com/Kotori316/LimitMobSpawn'
+                packaging = "jar"
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "AzureRepository"
+            url = uri("https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1")
+            credentials {
+                username = project.findProperty("azureUserName") ?: System.getenv("AZURE_USER_NAME") ?: ""
+                password = project.findProperty("azureToken") ?: System.getenv("AZURE_TOKEN") ?: "TOKEN"
+            }
+        }
+    }
+}
+
+////////////////
+// IntelliJ Project Import
+// The Mixin annotation process does not have an obfuscation source when running through the IntelliJ compiler,
+// thus we have to prevent it from being activated as part of importing this Gradle project into IntelliJ.
+if (System.getProperty("idea.sync.active") == "true") {
+    afterEvaluate {
+        tasks.withType(JavaCompile).all {
+            it.options.annotationProcessorPath = files()
+        }
+    }
+}
+
+task copyToDir(type: Copy, dependsOn: "build") {
+    def PATH_NAME = "destination"
+    from(deobfJar.getArchiveFile())
+    into(file(java.util.Optional.ofNullable(System.getenv(PATH_NAME)).orElse(".")))
+    onlyIf {
+        System.getenv(PATH_NAME) != null &&
+                Files.exists(Paths.get(System.getenv(PATH_NAME)))
+    }
+}
+
+task copyToDrive(type: Copy, dependsOn: "build") {
+    def PATH_NAME = "destination"
+    from(jar.getArchiveFile(), deobfJar.getArchiveFile(), srcJar.getArchiveFile())
+    into(file(java.util.Optional.ofNullable(System.getenv(PATH_NAME)).orElse(".")))
+    onlyIf {
+        System.getenv(PATH_NAME) != null &&
+                Files.exists(Paths.get(System.getenv(PATH_NAME)))
+    }
+}
