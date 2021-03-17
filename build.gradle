@@ -109,7 +109,7 @@ repositories {
 }
 
 def getForgeVersionToBuild() {
-    return 'net.minecraftforge:forge:1.16.5-36.0.46'
+    return 'net.minecraftforge:forge:1.16.5-36.1.0'
 }
 
 dependencies {
@@ -134,8 +134,8 @@ def jarAttributeMap = [
         "Specification-Title"     : "limit-mob-spawn-gui",
         "Specification-Vendor"    : "Kotori316",
         "Specification-Version"   : "1", // We are version 1 of ourselves
-        "Implementation-Title"    : project.name,
-        "Implementation-Version"  : project.version,
+        "Implementation-Title"    : String.valueOf(project.name),
+        "Implementation-Version"  : String.valueOf(project.version),
         "Implementation-Vendor"   : "Kotori316",
         "Implementation-Timestamp": ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT),
 ]
@@ -185,7 +185,7 @@ curseforge {
     String minecraftVersion = v.substring(v.lastIndexOf(":") + 1).split("-")[0]
     apiKey = project.hasProperty("curseforge_additional-enchanted-miner_key") ? getProperty("curseforge_additional-enchanted-miner_key") : ""
     project {
-        id = ''
+        id = '-51'
         changelogType = 'markdown'
         changelog = "See https://github.com/Kotori316/LimitMobSpawn-GUI/commits/master for change log." + System.lineSeparator() * 2 +
                 "For Minecraft $minecraftVersion, built with $v"
