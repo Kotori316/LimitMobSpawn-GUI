@@ -7,7 +7,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -49,13 +49,14 @@ public class LimitMobSpawnGui {
             ItemStack stack = playerIn.getHeldItem(handIn);
             if (!worldIn.isRemote) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayerEntity) playerIn);
-                if (serverPlayerEntity.hasPermissionLevel(2)) {
+                int level = Config.getInstance().getPermission();
+                if (serverPlayerEntity.hasPermissionLevel(level)) {
                     // Allow op users to change config.
                     worldIn.getCapability(Caps.getLmsCapability())
                         .map(LMSHandlerMessage::createClientMessageToOpenGui)
                         .ifPresent(m -> PacketHandler.openGuiInClient(m, (ServerPlayerEntity) playerIn));
                 } else {
-                    playerIn.sendStatusMessage(new StringTextComponent("You need permission level 2."), false);
+                    playerIn.sendStatusMessage(new TranslationTextComponent("You need permission level %s.", level), false);
                 }
             }
             return ActionResult.resultSuccess(stack);

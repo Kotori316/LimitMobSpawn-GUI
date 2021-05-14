@@ -63,7 +63,7 @@ public class LMSConfigGui {
     }
 
     private static void addPositionConfig(JsonObject save, ConfigGroup group, TestSpawn.Serializer<?> serializer) {
-        int limit = 3_000_000;
+        int limit = 30_000_000;
         serializer.propertyKeys().stream().sorted(Comparator.naturalOrder())
             .forEach(s -> {
                 int defaultValue = s.equals("maxY") ? 256 : 0;
