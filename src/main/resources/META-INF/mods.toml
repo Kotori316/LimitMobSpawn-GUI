@@ -1,12 +1,14 @@
 modLoader = "javafml"
 loaderVersion = "[36,)"
 license = "All rights reserved"
+issueTrackerURL="https://github.com/Kotori316/LimitMobSpawn-GUI/issues"
 [[mods]]
 modId = "limit-mob-spawn-gui"
 version = "${file.jarVersion}"
 displayName = "Limit Mob Spawn GUI"
 credits = "Kotori316"
 authors = "Kotori316"
+displayURL="https://github.com/Kotori316/LimitMobSpawn-GUI"
 description = '''
 Change setting of Limit Mob Spawn from GUI.
 '''
