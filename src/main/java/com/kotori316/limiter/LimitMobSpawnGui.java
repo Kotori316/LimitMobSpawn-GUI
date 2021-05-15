@@ -1,5 +1,9 @@
 package com.kotori316.limiter;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -7,8 +11,11 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,11 +63,17 @@ public class LimitMobSpawnGui {
                         .map(LMSHandlerMessage::createClientMessageToOpenGui)
                         .ifPresent(m -> PacketHandler.openGuiInClient(m, (ServerPlayerEntity) playerIn));
                 } else {
-                    playerIn.sendStatusMessage(new TranslationTextComponent("You need permission level %s.", level), false);
+                    playerIn.sendStatusMessage(new TranslationTextComponent("chat.limit-mob-spawn-gui.permission-error", level), false);
                 }
             }
             return ActionResult.resultSuccess(stack);
         }
-    }
 
+        @Override
+        @OnlyIn(Dist.CLIENT)
+        public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+            super.addInformation(stack, worldIn, tooltip, flagIn);
+            tooltip.add(new TranslationTextComponent("tooltip.limit-mob-spawn-gui.permission", Config.getInstance().getPermission()));
+        }
+    }
 }

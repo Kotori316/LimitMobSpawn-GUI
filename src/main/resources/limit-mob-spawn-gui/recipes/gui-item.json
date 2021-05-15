@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "m",
+    "wbw",
+    "bwb"
+  ],
+  "key": {
+    "m": [
+      {"item": "minecraft:rotten_flesh"},
+      {"tag": "forge:bones"},
+      {"tag": "forge:gunpowder"},
+      {"tag": "minecraft:arrows"}
+    ],
+    "b": {
+      "item": "minecraft:book"
+    },
+    "r": {
+      "item": "minecraft:bowl"
+    }
+  },
+  "result": {
+    "item": "limit-mob-spawn-gui:gui-item",
+    "count": 1
+  }
+}
