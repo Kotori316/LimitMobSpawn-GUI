@@ -196,7 +196,7 @@ curseforge {
         addArtifact srcJar
         relations {
             requiredDependency 'limit-mob-spawn'
-            requiredDependency 'ftb-gui-library'
+            requiredDependency 'ftb-library-forge'
         }
     }
     options {
