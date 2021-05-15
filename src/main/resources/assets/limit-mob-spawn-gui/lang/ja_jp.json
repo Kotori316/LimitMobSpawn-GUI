@@ -1,0 +1,6 @@
+{
+  "item.limit-mob-spawn-gui.gui-item": "Limit Mob Spawnの設定",
+  "chat.limit-mob-spawn-gui.permission-error": "権限レベル%sが必要です",
+  "chat.limit-mob-spawn-gui.exception": "'%s'の不適切なオプションです: %s",
+  "tooltip.limit-mob-spawn-gui.permission": "権限レベル: %s"
+}
