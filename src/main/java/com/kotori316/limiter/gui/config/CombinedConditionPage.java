@@ -16,6 +16,7 @@ import com.feed_the_beast.mods.ftbguilibrary.widget.GuiBase;
 import com.feed_the_beast.mods.ftbguilibrary.widget.GuiIcons;
 import com.feed_the_beast.mods.ftbguilibrary.widget.Panel;
 import com.feed_the_beast.mods.ftbguilibrary.widget.SimpleTextButton;
+import com.feed_the_beast.mods.ftbguilibrary.widget.WidgetType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -145,6 +146,23 @@ public class CombinedConditionPage extends GuiButtonListBase {
                     }
                     break;
             }
+        }
+
+        @Override
+        public boolean isEnabled() {
+            switch (this.id) {
+                case 1: // Remove
+                    return CombinedConditionPage.this.selectionIndex != -1;
+                case 2: // OK
+                    return CombinedConditionPage.this.list.size() >= 2;
+                default:
+                    return super.isEnabled();
+            }
+        }
+
+        @Override
+        public WidgetType getWidgetType() {
+            return isEnabled() ? super.getWidgetType() : WidgetType.DISABLED;
         }
     }
 }
