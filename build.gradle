@@ -185,7 +185,7 @@ curseforge {
     final File file = file("changelog.md")
     apiKey = project.hasProperty("curseforge_additional-enchanted-miner_key") ? getProperty("curseforge_additional-enchanted-miner_key") : ""
     project {
-        id = '-51'
+        id = '482441'
         changelogType = 'markdown'
         changelog = file.exists() ? file.text : "See https://github.com/Kotori316/LimitMobSpawn-GUI/commits/master for change log." + System.lineSeparator() * 2 +
                 "For Minecraft $minecraftVersion, built with $v"
