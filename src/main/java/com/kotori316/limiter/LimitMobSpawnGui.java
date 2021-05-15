@@ -20,6 +20,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.kotori316.limiter.capability.Caps;
 import com.kotori316.limiter.gui.packet.LMSHandlerMessage;
@@ -28,6 +30,7 @@ import com.kotori316.limiter.gui.packet.PacketHandler;
 @Mod(LimitMobSpawnGui.MOD_ID)
 public class LimitMobSpawnGui {
     public static final String MOD_ID = "limit-mob-spawn-gui";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Register {

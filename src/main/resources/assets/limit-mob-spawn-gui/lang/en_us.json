@@ -1,5 +1,6 @@
 {
   "item.limit-mob-spawn-gui.gui-item": "Limit Mob Spawn Config",
   "chat.limit-mob-spawn-gui.permission-error": "You need permission level %s.",
+  "chat.limit-mob-spawn-gui.exception": "Invalid option for '%s': %s",
   "tooltip.limit-mob-spawn-gui.permission": "Requires permission: %s"
 }

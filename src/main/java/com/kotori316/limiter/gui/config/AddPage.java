@@ -25,7 +25,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
+import com.kotori316.limiter.LimitMobSpawnGui;
 import com.kotori316.limiter.SpawnConditionLoader;
 import com.kotori316.limiter.TestSpawn;
 import com.kotori316.limiter.capability.LMSHandler;
@@ -37,6 +41,7 @@ import com.kotori316.limiter.gui.packet.LMSHandlerMessage;
 import com.kotori316.limiter.gui.packet.PacketHandler;
 
 public class AddPage extends GuiButtonListBase {
+    private static final Marker MARKER = MarkerManager.getMarker("AddPage");
     private final GuiBase parent;
     private final Consumer<TestSpawn> appender;
     private final Set<String> removedConditions;
@@ -120,8 +125,12 @@ public class AddPage extends GuiButtonListBase {
                             TestSpawn spawn = serializer.from(new Dynamic<>(JsonOps.INSTANCE, object));
                             appender.accept(spawn);
                         } catch (RuntimeException e) {
+                            LimitMobSpawnGui.LOGGER.warn(MARKER,
+                                "Error happened in creating '{}': {}", serializer.getType(), e);
                             if (Minecraft.getInstance().player != null) {
-                                Minecraft.getInstance().player.sendMessage(new StringTextComponent(e.getMessage()), Util.DUMMY_UUID);
+                                ITextComponent message = new TranslationTextComponent("chat.limit-mob-spawn-gui.exception",
+                                    serializer.getType(), e.getMessage());
+                                Minecraft.getInstance().player.sendMessage(message, Util.DUMMY_UUID);
                             }
                             return;
                         }
