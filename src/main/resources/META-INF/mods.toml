@@ -34,7 +34,7 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.limit-mob-spawn-gui]]
-modId = "ftbguilibrary"
+modId = "ftblibrary"
 mandatory = true
 versionRange = "[1604,)"
 ordering = "NONE"

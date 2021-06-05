@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.feed_the_beast.mods.ftbguilibrary.config.ConfigGroup;
-import com.feed_the_beast.mods.ftbguilibrary.config.gui.GuiEditConfig;
-import com.feed_the_beast.mods.ftbguilibrary.icon.Icon;
-import com.feed_the_beast.mods.ftbguilibrary.misc.GuiButtonListBase;
-import com.feed_the_beast.mods.ftbguilibrary.utils.Key;
-import com.feed_the_beast.mods.ftbguilibrary.utils.MouseButton;
-import com.feed_the_beast.mods.ftbguilibrary.widget.GuiBase;
-import com.feed_the_beast.mods.ftbguilibrary.widget.Panel;
-import com.feed_the_beast.mods.ftbguilibrary.widget.SimpleTextButton;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
+import dev.ftb.mods.ftblibrary.config.ConfigGroup;
+import dev.ftb.mods.ftblibrary.config.ui.EditConfigScreen;
+import dev.ftb.mods.ftblibrary.icon.Icon;
+import dev.ftb.mods.ftblibrary.ui.BaseScreen;
+import dev.ftb.mods.ftblibrary.ui.Panel;
+import dev.ftb.mods.ftblibrary.ui.SimpleTextButton;
+import dev.ftb.mods.ftblibrary.ui.input.Key;
+import dev.ftb.mods.ftblibrary.ui.input.MouseButton;
+import dev.ftb.mods.ftblibrary.ui.misc.ButtonListBaseScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Util;
@@ -40,13 +40,13 @@ import com.kotori316.limiter.conditions.Or;
 import com.kotori316.limiter.gui.packet.LMSHandlerMessage;
 import com.kotori316.limiter.gui.packet.PacketHandler;
 
-public class AddPage extends GuiButtonListBase {
+public class AddPage extends ButtonListBaseScreen {
     private static final Marker MARKER = MarkerManager.getMarker("AddPage");
-    private final GuiBase parent;
+    private final BaseScreen parent;
     private final Consumer<TestSpawn> appender;
     private final Set<String> removedConditions;
 
-    public AddPage(GuiBase parent, RuleType ruleType, LMSHandler lmsHandler) {
+    public AddPage(BaseScreen parent, RuleType ruleType, LMSHandler lmsHandler) {
         this.parent = parent;
         this.appender = spawn -> {
             ruleType.add(lmsHandler, spawn);
@@ -55,7 +55,7 @@ public class AddPage extends GuiButtonListBase {
         this.removedConditions = Collections.emptySet();
     }
 
-    public AddPage(GuiBase parent, Consumer<TestSpawn> appender, Set<String> removedConditions) {
+    public AddPage(BaseScreen parent, Consumer<TestSpawn> appender, Set<String> removedConditions) {
         this.parent = parent;
         this.appender = appender;
         this.removedConditions = removedConditions;
@@ -137,7 +137,7 @@ public class AddPage extends GuiButtonListBase {
                     }
                     AddPage.this.onBack();
                 };
-                GuiEditConfig gui = new GuiEditConfig(group) {
+                EditConfigScreen gui = new EditConfigScreen(group) {
                     @Override
                     public boolean onClosedByKey(Key key) {
                         return key.escOrInventory();

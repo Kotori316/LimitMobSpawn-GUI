@@ -7,16 +7,16 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import com.feed_the_beast.mods.ftbguilibrary.icon.Icon;
-import com.feed_the_beast.mods.ftbguilibrary.misc.GuiButtonListBase;
-import com.feed_the_beast.mods.ftbguilibrary.utils.Key;
-import com.feed_the_beast.mods.ftbguilibrary.utils.MouseButton;
-import com.feed_the_beast.mods.ftbguilibrary.widget.Button;
-import com.feed_the_beast.mods.ftbguilibrary.widget.GuiBase;
-import com.feed_the_beast.mods.ftbguilibrary.widget.GuiIcons;
-import com.feed_the_beast.mods.ftbguilibrary.widget.Panel;
-import com.feed_the_beast.mods.ftbguilibrary.widget.SimpleTextButton;
-import com.feed_the_beast.mods.ftbguilibrary.widget.WidgetType;
+import dev.ftb.mods.ftblibrary.icon.Icon;
+import dev.ftb.mods.ftblibrary.icon.Icons;
+import dev.ftb.mods.ftblibrary.ui.BaseScreen;
+import dev.ftb.mods.ftblibrary.ui.Button;
+import dev.ftb.mods.ftblibrary.ui.Panel;
+import dev.ftb.mods.ftblibrary.ui.SimpleTextButton;
+import dev.ftb.mods.ftblibrary.ui.WidgetType;
+import dev.ftb.mods.ftblibrary.ui.input.Key;
+import dev.ftb.mods.ftblibrary.ui.input.MouseButton;
+import dev.ftb.mods.ftblibrary.ui.misc.ButtonListBaseScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -25,9 +25,9 @@ import com.kotori316.limiter.TestSpawn;
 
 import static com.kotori316.limiter.gui.config.ListPage.getAt;
 
-public class CombinedConditionPage extends GuiButtonListBase {
+public class CombinedConditionPage extends ButtonListBaseScreen {
 
-    private final GuiBase parent;
+    private final BaseScreen parent;
     private final String ruleType;
     private final Function<List<TestSpawn>, TestSpawn> combiner;
     private final Consumer<TestSpawn> appender;
@@ -35,7 +35,7 @@ public class CombinedConditionPage extends GuiButtonListBase {
     private final CombineButton addButton, removeButton, okButton;
     private int selectionIndex = -1;
 
-    public CombinedConditionPage(GuiBase parent, String ruleType, Function<List<TestSpawn>, TestSpawn> combiner, Consumer<TestSpawn> appender) {
+    public CombinedConditionPage(BaseScreen parent, String ruleType, Function<List<TestSpawn>, TestSpawn> combiner, Consumer<TestSpawn> appender) {
         super();
         this.parent = parent;
         this.ruleType = ruleType;
@@ -61,7 +61,7 @@ public class CombinedConditionPage extends GuiButtonListBase {
                     int selectionIndex = panel.widgets.indexOf(this);
                     if (selectionIndex != CombinedConditionPage.this.selectionIndex) {
                         CombinedConditionPage.this.selectionIndex = selectionIndex;
-                        this.setIcon(GuiIcons.CHECK);
+                        this.setIcon(Icons.CHECK);
                     } else {
                         CombinedConditionPage.this.selectionIndex = -1;
                     }

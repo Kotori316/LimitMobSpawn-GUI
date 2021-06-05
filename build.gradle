@@ -22,7 +22,7 @@ apply plugin: 'maven-publish'
 //apply plugin: 'org.spongepowered.mixin'
 apply plugin: "com.matthewprenger.cursegradle"
 
-version = '16.6'
+version = '16.7'
 group = 'com.kotori316' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'LimitMobSpawn-GUI'
 
@@ -93,10 +93,17 @@ repositories {
 
     maven {
         name = "FTB"
-        url = "https://maven.latmod.com/"
+        url = "https://maven.saps.dev/minecraft/"
         content {
-            includeModule("com.feed_the_beast.mods", "ftb-chunks")
-            includeModule("com.feed_the_beast.mods", "ftb-gui-library")
+            includeModule("dev.ftb.mods", "ftb-library-forge")
+        }
+    }
+
+    maven {
+        name = "Architectury"
+        url = "https://maven.architectury.dev"
+        content {
+            includeModule("me.shedaniel", "architectury-forge")
         }
     }
 
@@ -114,9 +121,10 @@ def getForgeVersionToBuild() {
 dependencies {
     minecraft getForgeVersionToBuild()
     implementation(fg.deobf("com.kotori316:LimitMobSpawn:" + version))
-    implementation(fg.deobf("com.feed_the_beast.mods:ftb-gui-library:1604.1.1.26") {
+    implementation(fg.deobf("dev.ftb.mods:ftb-library-forge:1605.3.1-build.18") {
         transitive = false
     })
+    runtimeOnly(fg.deobf("me.shedaniel:architectury-forge:1.17.20"))
 
     // Mixin
     // annotationProcessor("org.spongepowered:mixin:0.8.2:processor")

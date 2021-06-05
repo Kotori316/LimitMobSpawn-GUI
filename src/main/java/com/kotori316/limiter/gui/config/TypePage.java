@@ -1,17 +1,17 @@
 package com.kotori316.limiter.gui.config;
 
-import com.feed_the_beast.mods.ftbguilibrary.icon.Icon;
-import com.feed_the_beast.mods.ftbguilibrary.misc.GuiButtonListBase;
-import com.feed_the_beast.mods.ftbguilibrary.utils.Key;
-import com.feed_the_beast.mods.ftbguilibrary.utils.MouseButton;
-import com.feed_the_beast.mods.ftbguilibrary.widget.Panel;
-import com.feed_the_beast.mods.ftbguilibrary.widget.SimpleTextButton;
+import dev.ftb.mods.ftblibrary.icon.Icon;
+import dev.ftb.mods.ftblibrary.ui.Panel;
+import dev.ftb.mods.ftblibrary.ui.SimpleTextButton;
+import dev.ftb.mods.ftblibrary.ui.input.Key;
+import dev.ftb.mods.ftblibrary.ui.input.MouseButton;
+import dev.ftb.mods.ftblibrary.ui.misc.ButtonListBaseScreen;
 import net.minecraft.util.text.StringTextComponent;
 
 import com.kotori316.limiter.capability.LMSHandler;
 import com.kotori316.limiter.capability.RuleType;
 
-public class TypePage extends GuiButtonListBase {
+public class TypePage extends ButtonListBaseScreen {
     private final LMSHandler lmsHandler;
 
     public TypePage(LMSHandler lmsHandler) {

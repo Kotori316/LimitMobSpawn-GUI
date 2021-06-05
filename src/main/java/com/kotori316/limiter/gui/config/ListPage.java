@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.feed_the_beast.mods.ftbguilibrary.icon.Icon;
-import com.feed_the_beast.mods.ftbguilibrary.misc.GuiButtonListBase;
-import com.feed_the_beast.mods.ftbguilibrary.utils.Key;
-import com.feed_the_beast.mods.ftbguilibrary.utils.MouseButton;
-import com.feed_the_beast.mods.ftbguilibrary.widget.Button;
-import com.feed_the_beast.mods.ftbguilibrary.widget.GuiBase;
-import com.feed_the_beast.mods.ftbguilibrary.widget.GuiIcons;
-import com.feed_the_beast.mods.ftbguilibrary.widget.Panel;
-import com.feed_the_beast.mods.ftbguilibrary.widget.SimpleTextButton;
-import com.feed_the_beast.mods.ftbguilibrary.widget.WidgetType;
+import dev.ftb.mods.ftblibrary.icon.Icon;
+import dev.ftb.mods.ftblibrary.icon.Icons;
+import dev.ftb.mods.ftblibrary.ui.BaseScreen;
+import dev.ftb.mods.ftblibrary.ui.Button;
+import dev.ftb.mods.ftblibrary.ui.Panel;
+import dev.ftb.mods.ftblibrary.ui.SimpleTextButton;
+import dev.ftb.mods.ftblibrary.ui.WidgetType;
+import dev.ftb.mods.ftblibrary.ui.input.Key;
+import dev.ftb.mods.ftblibrary.ui.input.MouseButton;
+import dev.ftb.mods.ftblibrary.ui.misc.ButtonListBaseScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -25,8 +25,8 @@ import com.kotori316.limiter.capability.RuleType;
 import com.kotori316.limiter.gui.packet.LMSHandlerMessage;
 import com.kotori316.limiter.gui.packet.PacketHandler;
 
-public class ListPage extends GuiButtonListBase {
-    private final GuiBase parent;
+public class ListPage extends ButtonListBaseScreen {
+    private final BaseScreen parent;
     private final RuleType ruleType;
     private final LMSHandler lmsHandler;
     private final List<TestSpawn> ruleList;
@@ -34,7 +34,7 @@ public class ListPage extends GuiButtonListBase {
     private final ModifyButton removeButton;
     private int selectionIndex = -1;
 
-    public ListPage(GuiBase parent, RuleType ruleType, LMSHandler lmsHandler) {
+    public ListPage(BaseScreen parent, RuleType ruleType, LMSHandler lmsHandler) {
         this.parent = parent;
         this.ruleType = ruleType;
         this.lmsHandler = lmsHandler;
@@ -62,7 +62,7 @@ public class ListPage extends GuiButtonListBase {
                     int selectionIndex = panel.widgets.indexOf(this);
                     if (selectionIndex != ListPage.this.selectionIndex) {
                         ListPage.this.selectionIndex = selectionIndex;
-                        this.setIcon(GuiIcons.CHECK);
+                        this.setIcon(Icons.CHECK);
                     } else {
                         ListPage.this.selectionIndex = -1;
                     }
