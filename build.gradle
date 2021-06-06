@@ -32,6 +32,7 @@ if ("true".equalsIgnoreCase(System.getenv("CI"))) {
     version = "$version.${System.getenv('GITHUB_RUN_NUMBER')}"
     println("Set version to $version because I'm in GitHub Actions.")
     println("CURSEFORGE_KEY: ${System.getenv().containsKey('CURSEFORGE_KEY')}")
+    println("LMS version: ${version.contains("-") ? version.substring(0, version.indexOf("-")) : version}")
 }
 
 println("Java: ${System.getProperty('java.version')} JVM: ${System.getProperty('java.vm.version')}(${System.getProperty('java.vendor')}) Arch: ${System.getProperty('os.arch')}")
@@ -126,7 +127,7 @@ def getForgeVersionToBuild() {
 
 dependencies {
     minecraft getForgeVersionToBuild()
-    implementation(fg.deobf("com.kotori316:LimitMobSpawn:" + version))
+    implementation(fg.deobf("com.kotori316:LimitMobSpawn:" + (version.contains("-") ? version.substring(0, version.indexOf("-")) : version)))
     implementation(fg.deobf("dev.ftb.mods:ftb-library-forge:1605.3.1-build.18") {
         transitive = false
     })
