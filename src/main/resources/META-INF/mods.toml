@@ -29,13 +29,13 @@ side = "BOTH"
 [[dependencies.limit-mob-spawn-gui]]
 modId = "limit-mob-spawn"
 mandatory = true
-versionRange = "[16,)"
+versionRange = "[16.7,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.limit-mob-spawn-gui]]
 modId = "ftbguilibrary"
 mandatory = true
-versionRange = "[1604,)"
+versionRange = "[1605,)"
 ordering = "NONE"
 side = "BOTH"
