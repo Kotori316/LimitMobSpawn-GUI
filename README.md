@@ -1,8 +1,25 @@
 # Limit Mob Spawn Gui
 
+[![](http://cf.way2muchnoise.eu/versions/limit-mob-spawn-gui.svg)][CurseForge]
+[![](http://cf.way2muchnoise.eu/full_limit-mob-spawn-gui_downloads.svg)][CurseForge]
+
 This mod is a plugin of [Limit Mob Spawn][lms download], adding an item to change configuration.
 
 [lms download]: https://www.curseforge.com/minecraft/mc-mods/limit-mob-spawn
+
+[CurseForge]: https://www.curseforge.com/minecraft/mc-mods/limit-mob-spawn-gui
+
+## Dependencies(Required)
+
+### Limit Mob Spawn
+
+* Download - [CurseForge][lms download]
+* GitHub - https://github.com/Kotori316/LimitMobSpawn
+
+### FTB Library (Forge)
+
+* Download - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ftb-library-forge/files/all)
+* GitHub - https://github.com/FTBTeam/FTB-Library
 
 ## How to use
 
