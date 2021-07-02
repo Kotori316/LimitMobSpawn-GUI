@@ -128,10 +128,10 @@ def getForgeVersionToBuild() {
 dependencies {
     minecraft getForgeVersionToBuild()
     implementation(fg.deobf("com.kotori316:LimitMobSpawn:" + (version.contains("-") ? version.substring(0, version.indexOf("-")) : version)))
-    implementation(fg.deobf("dev.ftb.mods:ftb-library-forge:1605.3.1-build.18") {
+    implementation(fg.deobf("dev.ftb.mods:ftb-library-forge:1605.3.1-build.20") {
         transitive = false
     })
-    runtimeOnly(fg.deobf("me.shedaniel:architectury-forge:1.17.20"))
+    runtimeOnly(fg.deobf("me.shedaniel:architectury-forge:1.18.26"))
 
     // Mixin
     // annotationProcessor("org.spongepowered:mixin:0.8.2:processor")
